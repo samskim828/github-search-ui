@@ -14,6 +14,7 @@ export const userReposQuery = `query UserRepos($user: String!) {
           description
           stargazerCount
           forkCount
+          openGraphImageUrl
           createdAt
         }
       }

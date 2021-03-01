@@ -3,18 +3,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import SearchBar from '../../components/SearchBar';
 import debounce from 'lodash.debounce';
 import { userReposQuery } from './queries';
-import { resourceLimits } from 'worker_threads';
-
-type Repository = {
-  id: string;
-  name: string;
-  url: string;
-  description: string;
-  homepageUrl: string;
-  forkCount: number;
-  stargazerCount: number;
-  createdAt: string;
-}
+import RepositoryCard, { Repository } from '../../components/RepositoryCard';
 
 const Home: React.FC = () => {
   const [user, setUser] = useState<string>('');
@@ -58,9 +47,11 @@ const Home: React.FC = () => {
         </Flex>
         :
         <Flex height="100%">
-          <Flex margin="0 auto" py={4} w={[200, 400, 600]}>
+          <Flex margin="0 auto" py={4} w={[300, 500, 700]} direction="column">
             <SearchBar onChange={handleChange} />
-            {/* // add results */}
+            <Box>
+              {repos.map(repo => (<RepositoryCard key={repo.id} repository={repo} />))}
+            </Box>
           </Flex>
         </Flex>
       }
