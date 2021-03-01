@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Box, Flex, Spinner, Alert, AlertIcon } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text, Heading } from '@chakra-ui/react';
 import SearchBar from '../../components/SearchBar';
 import ErrorMessage from '../../components/ErrorMessage';
 import RepositoryCard, { Repository } from '../../components/RepositoryCard';
@@ -25,25 +25,24 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (user && apiUrl && !error) {
       setLoading(true);
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Authorization': bearerToken, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: userReposQuery, variables: { user } })
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.data && res.data.repositoryOwner) {
-            const { repositories: { edges } } = res.data.repositoryOwner;
-            const repos = edges?.map((edge: any) => edge.node) || [];
+      // fetch(apiUrl, {
+      //   method: 'POST',
+      //   headers: { 'Authorization': bearerToken, 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ query: userReposQuery, variables: { user } })
+      // })
+      //   .then((res) => res.json())
+      //   .then((res) => {
+      //     if (res.data && res.data.repositoryOwner) {
+      //       const { repositories: { edges } } = res.data.repositoryOwner;
+      //       const repos = edges?.map((edge: any) => edge.node) || [];
 
-            setRepos(repos);
-          }
-        })
-        .catch(error => {
-          setLoading(false);
-          setError(true);
-        })
-
+      //       setRepos(repos);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     setLoading(false);
+      //     setError(true);
+      //   })
       setLoading(false);
     }
   }, [user, apiUrl, error])
@@ -64,6 +63,22 @@ const Home: React.FC = () => {
         <Flex height="100%">
           <Flex margin="0 auto" py={4} w={[300, 500, 700]} direction="column">
             <SearchBar onChange={handleChange} />
+            <Flex
+              color="gray.800"
+              letterSpacing="wide"
+              fontSize="lg"
+              fontWeight="normal"
+              textTransform="uppercase"
+              m={5}
+              alignItems="center"
+            >
+              <Text mr={3}>
+                Top 15 Repository Results for:
+              </Text>
+              <Heading as="h3" size="lg">
+                {user}
+              </Heading>
+            </Flex>
             <Box>
               {loading && (
                 <Box my={5} textAlign="center">

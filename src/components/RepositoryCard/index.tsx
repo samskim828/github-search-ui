@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Avatar, LinkBox, LinkOverlay } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
+import { StarIcon, AttachmentIcon } from '@chakra-ui/icons';
 import abbreviate from 'number-abbreviate';
 
 
@@ -8,8 +8,8 @@ export type Repository = {
   id: string;
   name: string;
   url: string;
-  description?: string;
-  homepageUrl?: string;
+  description?: string | null;
+  homepageUrl?: string | null;
   forkCount: number;
   stargazerCount: number;
   openGraphImageUrl: string;
@@ -23,7 +23,7 @@ interface RepositoryCardProps {
 const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
 
   return (
-    <LinkBox w={[300, 500, 700]} borderWidth="1px" borderRadius="lg" overflow="hidden" m={2} p={2}>
+    <LinkBox w={[300, 500, 700]} borderWidth="1px" borderRadius="lg" overflow="hidden" m={2} p={2} _hover={{ backgroundColor: 'gray.100' }}>
       <Flex alignItems="center">
         <Avatar size="md" src={repository.openGraphImageUrl} />
         <Box
@@ -42,8 +42,6 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
 
       <Box
         m={1}
-        fontWeight="semibold"
-        lineHeight="tight"
         color="gray.600"
         isTruncated
       >
@@ -51,12 +49,22 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
       </Box>
 
       <Flex my={1} mx={1} alignItems="center">
-        <StarIcon
-          color="gray.500"
-        />
-        <Box ml={1}>
-          {abbreviate(repository.stargazerCount, 1)}
-        </Box>
+        <Flex mr={3} alignItems="center">
+          <StarIcon
+            color="gray.500"
+          />
+          <Box ml={1}>
+            {abbreviate(repository.stargazerCount, 1)}
+          </Box>
+        </Flex>
+        <Flex mr={3} alignItems="center">
+          <AttachmentIcon
+            color="gray.500"
+          />
+          <Box ml={1}>
+            {abbreviate(repository.forkCount, 1)} Forks
+          </Box>
+        </Flex>
       </Flex>
     </LinkBox>
   )

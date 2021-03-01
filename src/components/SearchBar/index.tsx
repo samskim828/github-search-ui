@@ -11,7 +11,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange }) => {
   return (
     <InputGroup>
       <InputLeftElement pointerEvents="none" children={<SearchIcon />} />
-      <Input type="text" placeholder="Search this user's repositories..." onChange={onChange} />
+      <Input type="text" placeholder="Search a user's repositories..." onChange={onChange} />
     </InputGroup>
   )
 }
