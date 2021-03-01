@@ -75,7 +75,7 @@ const Home: React.FC = () => {
               <Text mr={3}>
                 Top 15 Repository Results for:
               </Text>
-              <Heading as="h3" size="lg">
+              <Heading as="h3" size="lg" data-testid="home-user-value">
                 {user}
               </Heading>
             </Flex>

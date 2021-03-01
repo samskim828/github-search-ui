@@ -23,7 +23,7 @@ interface RepositoryCardProps {
 const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
 
   return (
-    <LinkBox w={[300, 500, 700]} borderWidth="1px" borderRadius="lg" overflow="hidden" m={2} p={2} _hover={{ backgroundColor: 'gray.100' }}>
+    <LinkBox w={[300, 500, 700]} borderWidth="1px" borderRadius="lg" overflow="hidden" mx={2} my={4} p={2} _hover={{ backgroundColor: 'gray.100' }}>
       <Flex alignItems="center">
         <Avatar size="md" src={repository.openGraphImageUrl} />
         <Box

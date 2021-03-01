@@ -9,9 +9,9 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onChange }) => {
 
   return (
-    <InputGroup>
+    <InputGroup data-testid="search-bar-container">
       <InputLeftElement pointerEvents="none" children={<SearchIcon />} />
-      <Input type="text" placeholder="Search a user's repositories..." onChange={onChange} />
+      <Input type="text" placeholder="Search a user's repositories..." onChange={onChange} data-testid="search-bar-input" />
     </InputGroup>
   )
 }
