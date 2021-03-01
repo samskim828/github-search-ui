@@ -50,17 +50,13 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
 
       <Flex my={1} mx={1} alignItems="center">
         <Flex mr={3} alignItems="center">
-          <StarIcon
-            color="gray.500"
-          />
+          <StarIcon color="gray.500" />
           <Box ml={1}>
             {abbreviate(repository.stargazerCount, 1)}
           </Box>
         </Flex>
         <Flex mr={3} alignItems="center">
-          <AttachmentIcon
-            color="gray.500"
-          />
+          <AttachmentIcon color="gray.500" />
           <Box ml={1}>
             {abbreviate(repository.forkCount, 1)} Forks
           </Box>

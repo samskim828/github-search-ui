@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Box, Flex, Spinner, Text, Heading } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import SearchBar from '../../components/SearchBar';
 import ErrorMessage from '../../components/ErrorMessage';
-import RepositoryCard, { Repository } from '../../components/RepositoryCard';
+import { Repository } from '../../components/RepositoryCard';
+import RepositoryList from '../../components/RepositoryList';
 import debounce from 'lodash.debounce';
 import { userReposQuery } from './queries';
 
@@ -25,25 +26,25 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (user && apiUrl && !error) {
       setLoading(true);
-      // fetch(apiUrl, {
-      //   method: 'POST',
-      //   headers: { 'Authorization': bearerToken, 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ query: userReposQuery, variables: { user } })
-      // })
-      //   .then((res) => res.json())
-      //   .then((res) => {
-      //     if (res.data && res.data.repositoryOwner) {
-      //       const { repositories: { edges } } = res.data.repositoryOwner;
-      //       const repos = edges?.map((edge: any) => edge.node) || [];
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Authorization': bearerToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: userReposQuery, variables: { user } })
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.data && res.data.repositoryOwner) {
+            const { repositories: { edges } } = res.data.repositoryOwner;
+            const repos = edges?.map((edge: any) => edge.node) || [];
 
-      //       setRepos(repos);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     setLoading(false);
-      //     setError(true);
-      //   })
-      setLoading(false);
+            setLoading(false);
+            setRepos(repos);
+          }
+        })
+        .catch(error => {
+          setLoading(false);
+          setError(true);
+        })
     }
   }, [user, apiUrl, error])
 
@@ -63,34 +64,7 @@ const Home: React.FC = () => {
         <Flex height="100%">
           <Flex margin="0 auto" py={4} w={[300, 500, 700]} direction="column">
             <SearchBar onChange={handleChange} />
-            <Flex
-              color="gray.800"
-              letterSpacing="wide"
-              fontSize="lg"
-              fontWeight="normal"
-              textTransform="uppercase"
-              m={5}
-              alignItems="center"
-            >
-              <Text mr={3}>
-                Top 15 Repository Results for:
-              </Text>
-              <Heading as="h3" size="lg" data-testid="home-user-value">
-                {user}
-              </Heading>
-            </Flex>
-            <Box>
-              {loading && (
-                <Box my={5} textAlign="center">
-                  <Spinner size="xl" />
-                </Box>
-              )}
-              {repos.length ? repos.map(repo => (<RepositoryCard key={repo.id} repository={repo} />)) :
-                (<Box my={2} textAlign="center">
-                  Sorry! Couldn't find anything. Try searching for another user.
-                </Box>)
-              }
-            </Box>
+            <RepositoryList user={user} loading={loading} repositories={repos} />
           </Flex>
         </Flex>
       }

@@ -15,6 +15,7 @@
     "@types/node": "^12.20.4",
     "@types/react": "^16.14.4",
     "@types/react-dom": "^16.9.11",
+    "faker": "^5.4.0",
     "framer-motion": "^3.7.0",
     "graphql": "^15.5.0",
     "lodash.debounce": "^4.0.8",
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/faker": "^5.1.7",
     "@types/lodash.debounce": "^4.0.6"
   }
 }
