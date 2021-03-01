@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Flex, Avatar } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
+import abbreviate from 'number-abbreviate';
 
 
 export type Repository = {
@@ -47,12 +48,14 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
         {repository.description}
       </Box>
 
-      <Box d="flex" mt="2" alignItems="center">
+      <Flex my={1} mx={1} alignItems="center">
         <StarIcon
-          color="gray.300"
+          color="gray.500"
         />
-        {repository.stargazerCount}
-      </Box>
+        <Box ml={1}>
+          {abbreviate(repository.stargazerCount, 1)}
+        </Box>
+      </Flex>
     </Box>
   )
 }
