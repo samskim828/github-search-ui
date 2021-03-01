@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Avatar } from '@chakra-ui/react';
+import { Box, Flex, Avatar, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import abbreviate from 'number-abbreviate';
 
@@ -23,7 +23,7 @@ interface RepositoryCardProps {
 const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
 
   return (
-    <Box w={[300, 500, 700]} borderWidth="1px" borderRadius="lg" overflow="hidden" m={2} p={2}>
+    <LinkBox w={[300, 500, 700]} borderWidth="1px" borderRadius="lg" overflow="hidden" m={2} p={2}>
       <Flex alignItems="center">
         <Avatar size="md" src={repository.openGraphImageUrl} />
         <Box
@@ -34,7 +34,9 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
           textTransform="uppercase"
           ml="2"
         >
-          {repository.name}
+          <LinkOverlay href={repository.url} isExternal>
+            {repository.name}
+          </LinkOverlay>
         </Box>
       </Flex>
 
@@ -45,7 +47,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
         color="gray.600"
         isTruncated
       >
-        {repository.description}
+        {repository.description || ''}
       </Box>
 
       <Flex my={1} mx={1} alignItems="center">
@@ -56,7 +58,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repository }) => {
           {abbreviate(repository.stargazerCount, 1)}
         </Box>
       </Flex>
-    </Box>
+    </LinkBox>
   )
 }
 

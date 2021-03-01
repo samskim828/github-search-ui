@@ -1,13 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Alert, AlertIcon } from '@chakra-ui/react';
 import SearchBar from '../../components/SearchBar';
+import ErrorMessage from '../../components/ErrorMessage';
+import RepositoryCard, { Repository } from '../../components/RepositoryCard';
 import debounce from 'lodash.debounce';
 import { userReposQuery } from './queries';
-import RepositoryCard, { Repository } from '../../components/RepositoryCard';
 
 const Home: React.FC = () => {
   const [user, setUser] = useState<string>('');
   const [repos, setRepos] = useState<Repository[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const bearerToken = 'Bearer ' + process.env.REACT_APP_GITHUB_API_TOKEN;
   const apiUrl = process.env.REACT_APP_GITHUB_API_URL;
 
@@ -20,7 +23,8 @@ const Home: React.FC = () => {
   );
 
   useEffect(() => {
-    if (user && apiUrl) {
+    if (user && apiUrl && !error) {
+      setLoading(true);
       fetch(apiUrl, {
         method: 'POST',
         headers: { 'Authorization': bearerToken, 'Content-Type': 'application/json' },
@@ -35,13 +39,24 @@ const Home: React.FC = () => {
             setRepos(repos);
           }
         })
-        .catch(error => console.log("error"))
+        .catch(error => {
+          setLoading(false);
+          setError(true);
+        })
+
+      setLoading(false);
     }
-  })
+  }, [user, apiUrl, error])
+
+  if (error) {
+    return (
+      <ErrorMessage description="Looks like we had trouble processing your request. Please wait a few minutes and try again." />
+    )
+  }
 
   return (
     <Box height="100vh">
-      {!repos || !repos.length ?
+      {!user ?
         <Flex height="100%" alignItems="center" margin="0 auto" w={[200, 400, 600]}>
           <SearchBar onChange={handleChange} />
         </Flex>
@@ -50,7 +65,16 @@ const Home: React.FC = () => {
           <Flex margin="0 auto" py={4} w={[300, 500, 700]} direction="column">
             <SearchBar onChange={handleChange} />
             <Box>
-              {repos.map(repo => (<RepositoryCard key={repo.id} repository={repo} />))}
+              {loading && (
+                <Box my={5} textAlign="center">
+                  <Spinner size="xl" />
+                </Box>
+              )}
+              {repos.length ? repos.map(repo => (<RepositoryCard key={repo.id} repository={repo} />)) :
+                (<Box my={2} textAlign="center">
+                  Sorry! Couldn't find anything. Try searching for another user.
+                </Box>)
+              }
             </Box>
           </Flex>
         </Flex>
